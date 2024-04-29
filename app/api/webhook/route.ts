@@ -2,6 +2,7 @@ import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
+import { createUser } from '@/lib/actions/user.action'
 
 export async function POST(req: Request) {
 
@@ -59,18 +60,19 @@ export async function POST(req: Request) {
     const { id, email_addresses, image_url, username, first_name, last_name } =
       evt.data;
 
-    // // Create a new user in your database
-    // const mongoUser = await createUser({
-    //   clerkId: id,
-    //   name: `${first_name}${last_name ? ` ${last_name}` : ""}`,
-    //   username: username!,
-    //   email: email_addresses[0].email_address,
-    //   picture: image_url,
-    // });
-    // console.log("mongoUser", mongoUser);
+    // Create a new user in your database
+    const mongoUser = await createUser({
+      clerkId: id,
+      name: `${first_name}${last_name ? ` ${last_name}` : ""}`,
+      username: username!,
+      email: email_addresses[0].email_address,
+      picture: image_url,
+    });
+    console.log("mongoUser", mongoUser);
 
-    return NextResponse.json({ message: "OK" });
+    return NextResponse.json({ message: "OK", user: mongoUser });
   }
+
 
   return new Response('', { status: 200 })
 }
