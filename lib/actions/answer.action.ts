@@ -51,7 +51,6 @@ export async function getAnswers(params: GetAnswersParams) {
 
     const { questionId, sortBy, page = 1, pageSize = 15 } = params;
 
-    // Pagination: Skip the first n results and limit the results to the page size
     const skipAmount = (page - 1) * pageSize;
 
     // Sort: Sort by the selected filter
